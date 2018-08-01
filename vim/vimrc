@@ -1,0 +1,191 @@
+" #######################################
+" Plugins
+" #######################################
+
+call plug#begin('~/.config/nvim/plugged')
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'junegunn/seoul256.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'zchee/deoplete-go', { 'do': 'make'}
+Plug 'nsf/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'tpope/vim-commentary'
+Plug 'jiangmiao/auto-pairs'
+Plug 'majutsushi/tagbar'
+Plug 'ntpeters/vim-better-whitespace'
+call plug#end()
+
+" #######################################
+" Base settings
+" #######################################
+
+set nocompatible
+
+set ruler
+set path=$PWD/**
+set nowrap
+autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab
+
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+set lazyredraw
+set ttyfast
+
+" #######################################
+" Files, backups and undo
+" #######################################
+
+set nobackup
+set nowb
+set noswapfile
+
+" #######################################
+" Colorsheme settings
+" #######################################
+
+set t_Co=256
+
+function Night()
+	let g:seoul256_background = 237
+	colorscheme seoul256
+endfunction
+
+function Day()
+	let g:seoul256_background = 256
+	colorscheme seoul256-light
+endfunction
+
+" call Day()
+call Night()
+
+" #######################################
+" Golang settings
+" #######################################
+
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+let g:go_auto_sameids = 1
+let g:go_fmt_command = "goimports"
+
+" #######################################
+" Deoplete settings
+" #######################################
+
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#package_dot = 1
+" execue in bash: `gocode set autobuild true`
+
+" #######################################
+" NERDTree settings
+" #######################################
+
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" #######################################
+" Mapping
+" #######################################
+
+let g:mapleader = ","
+
+map <C-n> :NERDTreeToggle<CR>
+map <C-p> :FZF<CR>
+nmap <F8> :TagbarToggle<CR>
+
+map <leader>c :checktime<cr>
+
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tn :tabnew<cr>
+
+map <leader>r :GoReferrers<cr>
+map <leader>d :GoDef<cr>
+map <leader>i :GoImplements<cr>
+map <leader>l :GoLint<cr>
+map <leader>e :GoRename<cr>
+
+" Better window navigation
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+" Copy to system clipboard
+vnoremap <C-C> :w !xsel -b<CR><CR>
+
+" #######################################
+" Formatting settings
+" #######################################
+
+filetype plugin indent on
+if has("autocmd")
+    filetype on
+
+    augroup vimrc
+        autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+        autocmd FileType ruby,yml setlocal ts=2 sts=2 sw=2 expandtab nocursorline
+        autocmd FileType go setlocal ts=4 sts=4 sw=4 noexpandtab
+    augroup END
+endif
+
+let g:better_whitespace_enabled=0
+let g:strip_whitespace_on_save=1
+
+" #######################################
+" Golang tagbars settings
+" #######################################
+
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
+
+" #######################################
+" Turn persistent undo on
+" #######################################
+
+if !isdirectory($HOME."/.vim")
+    call mkdir($HOME."/.vim", "", 0770)
+endif
+if !isdirectory($HOME."/.vim/undo-dir")
+    call mkdir($HOME."/.vim/undo-dir", "", 0700)
+endif
+set undodir=~/.vim/undo-dir
+set undofile
