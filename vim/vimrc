@@ -24,6 +24,7 @@ call plug#end()
 " Base settings
 " #######################################
 
+set exrc
 set nocompatible
 
 set ruler
