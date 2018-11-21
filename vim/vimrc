@@ -40,6 +40,8 @@ set smartcase
 set lazyredraw
 set ttyfast
 
+set backspace=indent,eol,start
+
 " #######################################
 " Files, backups and undo
 " #######################################
