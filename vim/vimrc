@@ -2,6 +2,10 @@
 " Plugins
 " #######################################
 
+" new gocode not supported autobuild, so use this command:
+" CompileDaemon -build "make build"  > /dev/null 2>&1 &
+" to run autobuild daemon
+
 call plug#begin('~/.vim/plugged')
 Plug 'Valloric/YouCompleteMe'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
