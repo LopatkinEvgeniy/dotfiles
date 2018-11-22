@@ -88,15 +88,6 @@ let g:go_auto_sameids = 1
 let g:go_fmt_command = "goimports"
 
 " #######################################
-" Deoplete settings
-" #######################################
-
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#package_dot = 1
-" execue in bash: `gocode set autobuild true`
-
-" #######################################
 " NERDTree settings
 " #######################################
 
