@@ -1,0 +1,8 @@
+[user]
+	email = javany25@mail.ru
+	name = elopatkin
+[alias]
+	ch = checkout
+	st = status
+	br = branch
+	hist = log --graph --oneline -7
