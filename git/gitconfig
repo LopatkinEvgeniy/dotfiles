@@ -7,3 +7,5 @@
 	br = branch
 	hist = log --graph --oneline -7
 	rb = rebase -i --fork-point origin/master
+[core]
+	editor = vim
