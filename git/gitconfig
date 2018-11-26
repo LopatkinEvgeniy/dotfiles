@@ -6,3 +6,4 @@
 	st = status
 	br = branch
 	hist = log --graph --oneline -7
+	rb = rebase -i --fork-point origin/master
